@@ -1,0 +1,6 @@
+{
+  "name": "Brat Portfolio",
+  "description": "A personal portfolio and contact page styled in the iconic Brat lime green aesthetic with blurry text and scroll-triggered animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

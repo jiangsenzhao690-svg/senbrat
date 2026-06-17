@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Bold Typography & Brat font stretch classes */
+  .font-brat {
+    font-family: "Helvetica Neue", "Arial Black", "Arial", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: -0.06em;
+    font-weight: 900;
+    font-stretch: condensed;
+  }
+  
+  /* Bold Typography Blurry text effects */
+  .text-blur-sm {
+    text-shadow: 0 0 0.8px rgba(224, 226, 219, 0.2), 0 0 0.8px rgba(0, 0, 0, 0.85);
+    filter: blur(0.3px);
+  }
+  
+  .text-blur-md {
+    text-shadow: 0 0 1.5px rgba(154, 205, 50, 0.3), 0 0 1.5px rgba(0, 0, 0, 0.9);
+    filter: blur(0.5px);
+  }
+  
+  .text-blur-lg {
+    text-shadow: 0 0 3px rgba(154, 205, 50, 0.4), 0 0 3px rgba(0, 0, 0, 0.95);
+    filter: blur(1px);
+  }
+
+  /* Stretch effects mimicking high-end brutalism */
+  .stretch-x-compressed {
+    display: inline-block;
+    transform: scaleX(0.8);
+    transform-origin: center;
+  }
+
+  .stretch-x-heavy {
+    display: inline-block;
+    transform: scaleX(0.7);
+    transform-origin: center;
+  }
+}
+
+/* Base resets & custom scrollbar representing the 'Bold Typography' palette */
+html {
+  scroll-behavior: smooth;
+  background-color: #0A0B08;
+  color: #E0E2DB;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0B08;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9ACD32;
+  border-radius: 4px;
+}
+
+::selection {
+  background-color: #9ACD32;
+  color: #0A0B08;
+}
+
+/* Analog scanline / micro-mesh noise overlay */
+.brat-noise::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: 
+    radial-gradient(ellipse at center, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.85) 100%),
+    repeating-linear-gradient(0deg, #000 0px, #000 1px, transparent 1px, transparent 2px),
+    repeating-linear-gradient(90deg, #000 0px, #000 1px, transparent 1px, transparent 2px);
+  background-size: cover, 3px 3px, 3px 3px;
+}
+
+/* Dynamic background gradient animations */
+@keyframes fluidBg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-fluid-gradient {
+  background-size: 200% 200%;
+  animation: fluidBg 15s ease infinite;
+}
