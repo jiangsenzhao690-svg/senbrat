@@ -20,8 +20,8 @@ export default function Navbar({ currentSection }: NavbarProps) {
 
   const navItems = [
     { id: "hero", label: "home" },
-    { id: "generator", label: "brat-creator" },
     { id: "works", label: "works" },
+    { id: "generator", label: "brat-creator" },
     { id: "about", label: " manifesto" },
     { id: "contact", label: "contact" }
   ];
