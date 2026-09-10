@@ -57,9 +57,10 @@ export default function App() {
 "about"
       ? 
 "radial-gradient(circle at 25% 75%, rgba(154,205,50,0.18) 0%, rgba(10,11,8,1) 65%)"
-      : 
+      :
 "radial-gradient(circle at 50% 90%, rgba(154,205,50,0.25) 0%, rgba(10,11,8,1) 55%)"
-  }}
+        }}
+      />
 
       {/* Floating Header */}
       <Navbar currentSection={currentSection} />
