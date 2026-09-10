@@ -14,7 +14,7 @@ export default function App() {
   // Track scroll position to update navbar links and background triggers dynamically
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["hero", "generator", "works", "about", "contact"];
+      const sections = ["hero", "works", "generater", "about", "contact"];
       const scrollPosition = window.scrollY + 160;
 
       for (const section of sections) {
@@ -41,17 +41,25 @@ export default function App() {
       <div 
         className="fixed inset-0 pointer-events-none -z-20 transition-all duration-1000 ease-in-out opacity-40"
         style={{
-          background: currentSection === "hero" 
-            ? "radial-gradient(circle at 80% 20%, rgba(154,205,50,0.15) 0%, rgba(10,11,8,1) 60%)"
-            : currentSection === "generator"
-            ? "radial-gradient(circle at 10% 90%, rgba(154,205,50,0.15) 0%, rgba(10,11,8,1) 50%)"
-            : currentSection === "works"
-            ? "radial-gradient(circle at 85% 50%, rgba(154,205,50,0.2) 0%, rgba(10,11,8,1) 70%)"
-            : currentSection === "about"
-            ? "radial-gradient(circle at 25% 75%, rgba(154,205,50,0.18) 0%, rgba(10,11,8,1) 65%)"
-            : "radial-gradient(circle at 50% 90%, rgba(154,205,50,0.25) 0%, rgba(10,11,8,1) 55%)"
-        }}
-      />
+         background: currentSection === 
+"hero" 
+      ? 
+"radial-gradient(circle at 80% 20%, rgba(154,205,50,0.15) 0%, rgba(10,11,8,1) 60%)"
+      : currentSection === 
+"works"
+      ? 
+"radial-gradient(circle at 85% 50%, rgba(154,205,50,0.2) 0%, rgba(10,11,8,1) 70%)"
+      : currentSection === 
+"generator"
+      ? 
+"radial-gradient(circle at 10% 90%, rgba(154,205,50,0.15) 0%, rgba(10,11,8,1) 50%)"
+      : currentSection === 
+"about"
+      ? 
+"radial-gradient(circle at 25% 75%, rgba(154,205,50,0.18) 0%, rgba(10,11,8,1) 65%)"
+      : 
+"radial-gradient(circle at 50% 90%, rgba(154,205,50,0.25) 0%, rgba(10,11,8,1) 55%)"
+  }}
 
       {/* Floating Header */}
       <Navbar currentSection={currentSection} />
@@ -59,8 +67,8 @@ export default function App() {
       {/* Structured Sections */}
       <main>
         <Hero />
-        <BratGenerator />
         <Works />
+        <BratGenerator />
         <About />
         <ContactForm />
       </main>
