@@ -2,38 +2,33 @@
 
 @layer utilities {
   .font-brat {
-    font-family: "Helvetica Neue", "Arial Black", Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     letter-spacing: -0.06em;
+    font-family: "Helvetica Neue", Arial Black, Arial, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
     font-weight: 900;
   }
-
   .text-blur-sm {
     text-shadow: 0 0 0.8px rgba(224, 226, 219, 0.2), 0 0 0.8px rgba(0, 0, 0, 0.85);
     filter: blur(0.3px);
   }
-
   .text-blur-md {
     text-shadow: 0 0 1.5px rgba(154, 205, 50, 0.3), 0 0 1.5px rgba(0, 0, 0, 0.9);
     filter: blur(0.5px);
   }
-
   .text-blur-lg {
     text-shadow: 0 0 3px rgba(154, 205, 50, 0.4), 0 0 3px rgba(0, 0, 0, 0.95);
     filter: blur(1px);
   }
-
   .brat-noise::before {
     content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
     opacity: 0.03;
     pointer-events: none;
     z-index: 9999;
-    background-image: radial-gradient(#ffffff26, #000000d9),
-      repeating-linear-gradient(0deg, #000 0px, #000 1px, transparent 1px, transparent 2px);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.85)), repeating-linear-gradient(0deg, #000 0, #000 1px, transparent 1px, transparent 2px);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 }
 

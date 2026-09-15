@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Send, Trash2, Github } from 'lucide-react';
-import { MessageLog } from '../types';
+import { Send, Mail, MapPin, CheckCircle, AlertCircle, Trash2, MessageSquare } from 'lucide-react';
+import { ContactMessage } from '../types';
 
-export const Contact: React.FC = () => {
+export function Contact() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [logs, setLogs] = useState<MessageLog[]>([]);
+  const [pings, setPings] = useState<ContactMessage[]>([]);
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('brat_pings_v1');
-      if (stored) {
-        setLogs(JSON.parse(stored));
+      const saved = localStorage.getItem('brat_pings_v1');
+      if (saved) {
+        setPings(JSON.parse(saved));
       }
-    } catch (e) {
-      console.warn('LocalStorage blocked', e);
+    } catch (err) {
+      console.warn('LocalStorage access blocked', err);
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) {
       setStatus('error');
@@ -33,11 +33,11 @@ export const Contact: React.FC = () => {
     setStatus('sending');
 
     setTimeout(() => {
-      const newEntry: MessageLog = {
+      const newMsg: ContactMessage = {
         id: `msg-${Date.now()}`,
         name,
         email,
-        subject: subject || 'General Inquiry',
+        subject: subject || 'General Collaboration',
         message,
         timestamp: new Date().toLocaleTimeString('zh-CN', {
           hour: '2-digit',
@@ -46,8 +46,8 @@ export const Contact: React.FC = () => {
         }),
       };
 
-      const updated = [newEntry, ...logs].slice(0, 5);
-      setLogs(updated);
+      const updated = [newMsg, ...pings].slice(0, 5);
+      setPings(updated);
 
       try {
         localStorage.setItem('brat_pings_v1', JSON.stringify(updated));
@@ -60,13 +60,12 @@ export const Contact: React.FC = () => {
       setEmail('');
       setSubject('');
       setMessage('');
-
       setTimeout(() => setStatus('idle'), 4000);
     }, 1000);
   };
 
-  const clearLogs = () => {
-    setLogs([]);
+  const handleClearPings = () => {
+    setPings([]);
     try {
       localStorage.removeItem('brat_pings_v1');
     } catch {}
@@ -78,7 +77,7 @@ export const Contact: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
-          {/* Left: Contact Info */}
+          {/* Left Column: Direct Info */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
             <div className="space-y-6">
               <motion.div
@@ -88,7 +87,8 @@ export const Contact: React.FC = () => {
                 transition={{ duration: 0.6 }}
               >
                 <span className="font-mono text-[#9ACD32] uppercase tracking-[0.3em] text-xs flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5" /> [ PING & SUB-CULTURAL COLLABORATION ]
+                  <Mail className="w-3.5 h-3.5" />
+                  [ PING & SUB-CULTURAL COLLABORATION ]
                 </span>
                 <h2 className="font-brat text-4xl sm:text-6xl text-white tracking-tighter mt-3 uppercase text-blur-sm">
                   contact.联络我
@@ -112,65 +112,64 @@ export const Contact: React.FC = () => {
                   </a>
                 </div>
 
-                <div className="bg-[#141614] border border-[#9ACD32]/20 p-4">
+                <div className="bg-[#141614] border border-[#9ACD32]/30 p-4">
                   <span className="font-mono text-[10px] text-gray-400 uppercase tracking-widest block">
-                    LOCATION & TIMEZONE
+                    COLLABORATION BASE (协作基地)
                   </span>
-                  <span className="font-mono text-sm text-gray-200 block mt-1">
-                    BEIJING, CN (UTC+8) / GLOBAL REMOTE
-                  </span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <MapPin className="w-4 h-4 text-[#9ACD32]" />
+                    <span className="font-mono text-sm text-white uppercase">
+                      CHINA · REMOTE WORLDWIDE (全球远程)
+                    </span>
+                  </div>
                 </div>
-              </div>
-
-              {/* Social buttons */}
-              <div className="flex gap-3 pt-2">
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 py-3 px-4 bg-[#141614] border border-zinc-800 hover:border-[#9ACD32] text-white font-brat text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
-                >
-                  <Github className="w-4 h-4 text-[#9ACD32]" /> GITHUB
-                </a>
-                <a
-                  href="mailto:jiangsenzhao690@gmail.com"
-                  className="flex-1 py-3 px-4 bg-[#9ACD32] text-black hover:bg-black hover:text-[#9ACD32] border border-transparent hover:border-[#9ACD32] font-brat text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors font-bold"
-                >
-                  <Mail className="w-4 h-4" /> SEND MAIL
-                </a>
               </div>
             </div>
 
-            {/* Terminal Recent Logs */}
-            {logs.length > 0 && (
-              <div className="bg-[#0d0e0d] border border-zinc-800 p-4 space-y-2">
-                <div className="flex justify-between items-center text-xs font-mono text-zinc-500 pb-2 border-b border-zinc-800">
-                  <span>LOCAL DISPATCH LOGS ({logs.length})</span>
+            {/* Pings Log */}
+            {pings.length > 0 && (
+              <div className="bg-[#141614] border border-zinc-800 p-4 space-y-2">
+                <div className="flex justify-between items-center text-xs font-mono text-gray-400 pb-2 border-b border-zinc-800">
+                  <span className="flex items-center gap-1.5 text-[#9ACD32]">
+                    <MessageSquare className="w-3.5 h-3.5" /> RECENT PINGS ({pings.length})
+                  </span>
                   <button
-                    onClick={clearLogs}
-                    className="hover:text-red-400 flex items-center gap-1 cursor-pointer"
-                    title="Clear Logs"
+                    type="button"
+                    onClick={handleClearPings}
+                    className="hover:text-red-400 transition-colors p-1"
+                    title="清空历史记录"
                   >
-                    <Trash2 className="w-3 h-3" /> CLEAR
+                    <Trash2 className="w-3 h-3" />
                   </button>
                 </div>
-                {logs.map((item) => (
-                  <div key={item.id} className="text-[11px] font-mono text-zinc-400">
-                    <span className="text-[#9ACD32]">[{item.timestamp}]</span> {item.name} &lt;
-                    {item.email}&gt;
-                  </div>
-                ))}
+                <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                  {pings.map((p) => (
+                    <div
+                      key={p.id}
+                      className="text-[11px] font-mono p-2 bg-[#0d0e0d] border border-zinc-800/80 flex justify-between items-center"
+                    >
+                      <div className="truncate mr-2">
+                        <span className="text-[#9ACD32] font-semibold">{p.name}</span>
+                        <span className="text-gray-500 ml-1.5 truncate">{p.subject}</span>
+                      </div>
+                      <span className="text-gray-600 text-[10px] shrink-0">{p.timestamp}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          {/* Right: Message Form */}
-          <div className="lg:col-span-7 bg-[#141614] border-2 border-[#9ACD32]/40 p-8 flex flex-col justify-between">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Right Column: Interactive Form */}
+          <div className="lg:col-span-7 bg-[#141614] border-2 border-[#9ACD32]/40 p-6 sm:p-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="contact-name" className="font-mono text-xs text-gray-300 uppercase block mb-2">
-                    NAME / 您的称呼 *
+                  <label
+                    htmlFor="contact-name"
+                    className="font-mono text-xs text-gray-300 uppercase block mb-1.5"
+                  >
+                    your name / 姓名 *
                   </label>
                   <input
                     id="contact-name"
@@ -178,13 +177,17 @@ export const Contact: React.FC = () => {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Senzhao / 赵江森"
-                    className="w-full bg-[#0d0e0d] border border-zinc-800 focus:border-[#9ACD32] px-4 py-3 text-sm text-white font-sans focus:outline-none"
+                    placeholder="e.g. Alex / 品牌主"
+                    className="w-full bg-[#0d0e0d] border border-[#9ACD32]/30 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-[#9ACD32]"
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="contact-email" className="font-mono text-xs text-gray-300 uppercase block mb-2">
-                    EMAIL / 电子邮箱 *
+                  <label
+                    htmlFor="contact-email"
+                    className="font-mono text-xs text-gray-300 uppercase block mb-1.5"
+                  >
+                    your email / 邮箱 *
                   </label>
                   <input
                     id="contact-email"
@@ -192,29 +195,35 @@ export const Contact: React.FC = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    className="w-full bg-[#0d0e0d] border border-zinc-800 focus:border-[#9ACD32] px-4 py-3 text-sm text-white font-sans focus:outline-none"
+                    placeholder="contact@yourdomain.com"
+                    className="w-full bg-[#0d0e0d] border border-[#9ACD32]/30 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-[#9ACD32]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="contact-subject" className="font-mono text-xs text-gray-300 uppercase block mb-2">
-                  SUBJECT / 项目主题
+                <label
+                  htmlFor="contact-subject"
+                  className="font-mono text-xs text-gray-300 uppercase block mb-1.5"
+                >
+                  subject / 合作主题
                 </label>
                 <input
                   id="contact-subject"
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  placeholder="Creative Direction / Web Project"
-                  className="w-full bg-[#0d0e0d] border border-zinc-800 focus:border-[#9ACD32] px-4 py-3 text-sm text-white font-sans focus:outline-none"
+                  placeholder="项目委托 / 视觉设计 / 网页开发"
+                  className="w-full bg-[#0d0e0d] border border-[#9ACD32]/30 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-[#9ACD32]"
                 />
               </div>
 
               <div>
-                <label htmlFor="contact-message" className="font-mono text-xs text-gray-300 uppercase block mb-2">
-                  MESSAGE / 需求描述 *
+                <label
+                  htmlFor="contact-message"
+                  className="font-mono text-xs text-gray-300 uppercase block mb-1.5"
+                >
+                  message / 详细留言 *
                 </label>
                 <textarea
                   id="contact-message"
@@ -222,43 +231,45 @@ export const Contact: React.FC = () => {
                   rows={5}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell me about your project, timeline, and vibe..."
-                  className="w-full bg-[#0d0e0d] border border-zinc-800 focus:border-[#9ACD32] p-4 text-sm text-white font-sans focus:outline-none resize-none"
+                  placeholder="描述您的想法、预算范围或预期的交付时间..."
+                  className="w-full bg-[#0d0e0d] border border-[#9ACD32]/30 p-3.5 text-sm text-white font-mono focus:outline-none focus:border-[#9ACD32] resize-none"
                 />
               </div>
 
-              <div className="flex items-center justify-between pt-2">
-                <div>
-                  {status === 'error' && (
-                    <span className="font-mono text-xs text-red-500 uppercase">
-                      * Please fill out all required fields.
-                    </span>
-                  )}
-                  {status === 'success' && (
-                    <span className="font-mono text-xs text-[#9ACD32] uppercase">
-                      ✓ MESSAGE DISPATCHED SUCCESSFULLY!
-                    </span>
-                  )}
+              {/* Status alerts */}
+              {status === 'success' && (
+                <div className="p-3 bg-emerald-500/10 border border-emerald-500 text-emerald-400 font-mono text-xs flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  <span>消息已记录！感谢您的来信，我将尽快查阅并回复。</span>
                 </div>
+              )}
 
-                <button
-                  type="submit"
-                  disabled={status === 'sending'}
-                  className="py-3.5 px-8 bg-[#9ACD32] text-black font-brat text-xs uppercase tracking-widest hover:bg-white transition-all cursor-pointer flex items-center gap-2 font-bold disabled:opacity-50"
-                >
-                  {status === 'sending' ? (
-                    'DISPATCHING...'
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" /> TRANSMIT_SIGNAL
-                    </>
-                  )}
-                </button>
-              </div>
+              {status === 'error' && (
+                <div className="p-3 bg-red-500/10 border border-red-500 text-red-400 font-mono text-xs flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>请填写完整的姓名、邮箱以及留言内容。</span>
+                </div>
+              )}
+
+              <button
+                id="btn-send-message"
+                type="submit"
+                disabled={status === 'sending'}
+                className="w-full py-3.5 bg-[#9ACD32] hover:bg-white text-black font-brat text-sm uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer font-bold shadow-[0_0_15px_rgba(154,205,50,0.3)] disabled:opacity-50"
+              >
+                {status === 'sending' ? (
+                  <span>SENDING TRANSMISSION...</span>
+                ) : (
+                  <>
+                    <span>SEND TRANSMISSION / 发送讯息</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
+              </button>
             </form>
           </div>
         </div>
       </div>
     </section>
   );
-};
+}

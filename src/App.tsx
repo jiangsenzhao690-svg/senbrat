@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { AboutMe } from './components/AboutMe';
 import { Works } from './components/Works';
-import { Generator } from './components/Generator';
-import { About } from './components/About';
+import { BratGenerator } from './components/BratGenerator';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
@@ -12,72 +12,49 @@ export function App() {
   const [currentSection, setCurrentSection] = useState<string>('hero');
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['hero', 'works', 'generator', 'about', 'contact'];
-      const scrollPos = window.scrollY + 160;
+    const sectionIds = ['hero', 'about-me', 'works', 'generator', 'contact'];
 
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setCurrentSection(id);
-            break;
-          }
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el && el.offsetTop <= scrollPosition) {
+          setCurrentSection(sectionIds[i]);
+          break;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0B08] text-[#E0E2DB] selection:bg-[#9ACD32] selection:text-[#0A0B08] relative font-sans antialiased brat-noise overflow-x-hidden">
-      {/* Dynamic ambient background glow */}
-      <div
-        className="fixed inset-0 pointer-events-none -z-20 transition-all duration-1000 ease-in-out opacity-40"
-        style={{
-          background:
-            currentSection === 'hero'
-              ? 'radial-gradient(circle at 80% 20%, rgba(154,205,50,0.15) 0%, rgba(10,11,8,1) 60%)'
-              : currentSection === 'works'
-              ? 'radial-gradient(circle at 85% 50%, rgba(154,205,50,0.2) 0%, rgba(10,11,8,1) 70%)'
-              : currentSection === 'generator'
-              ? 'radial-gradient(circle at 10% 90%, rgba(154,205,50,0.15) 0%, rgba(10,11,8,1) 50%)'
-              : currentSection === 'about'
-              ? 'radial-gradient(circle at 25% 75%, rgba(154,205,50,0.18) 0%, rgba(10,11,8,1) 65%)'
-              : 'radial-gradient(circle at 50% 90%, rgba(154,205,50,0.25) 0%, rgba(10,11,8,1) 55%)',
-        }}
-      />
+    <div className="min-h-screen bg-[#0A0B08] text-white font-sans selection:bg-[#9ACD32] selection:text-black brat-noise relative">
+      {/* Original glowing rotating star cursor */}
+      <CustomCursor />
 
-      {/* Navigation Header */}
+      {/* Top Fixed Navigation */}
       <Navbar currentSection={currentSection} />
 
-      {/* Main Single-Page Sections */}
-      <main>
-        {/* Homepage / Hero Section (with small text removed) */}
-        <Hero />
+      {/* 1. Hero / Home Section */}
+      <Hero />
 
-        {/* Selected Works Gallery */}
-        <Works />
+      {/* 2. NEW: About Me Section (placed directly between HOME and WORKS, Manifesto deleted) */}
+      <AboutMe />
 
-        {/* Brat Style Type Generator */}
-        <Generator />
+      {/* 3. Works Showcase Section */}
+      <Works />
 
-        {/* About, Vibe Manifesto & Audio Synthesizer */}
-        <About />
+      {/* 4. Brat Generator Section */}
+      <BratGenerator />
 
-        {/* Contact Form & Dispatch Logs */}
-        <Contact />
-      </main>
+      {/* 5. Contact Section */}
+      <Contact />
 
-      {/* Footer */}
+      {/* 6. Footer */}
       <Footer />
-
-      {/* Interactive Brat Custom Cursor */}
-      <CustomCursor />
     </div>
   );
 }

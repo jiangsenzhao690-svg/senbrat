@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Disc, Menu, X } from 'lucide-react';
+import { Asterisk, Menu, X } from 'lucide-react';
+import { NavSection } from '../types';
 
 interface NavbarProps {
   currentSection: string;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
+const NAV_ITEMS: NavSection[] = [
+  { id: 'hero', label: 'home' },
+  { id: 'about-me', label: 'about me' },
+  { id: 'works', label: 'works' },
+  { id: 'generator', label: 'brat-creator' },
+  { id: 'contact', label: 'contact' },
+];
+
+export function Navbar({ currentSection }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -18,15 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { id: 'hero', label: 'home' },
-    { id: 'works', label: 'works' },
-    { id: 'generator', label: 'brat-creator' },
-    { id: 'about', label: 'manifesto' },
-    { id: 'contact', label: 'contact' },
-  ];
-
-  const scrollTo = (id: string) => {
+  const scrollToSection = (id: string) => {
     setIsOpen(false);
     const element = document.getElementById(id);
     if (element) {
@@ -46,34 +47,38 @@ export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Brand Logo */}
-          <div
-            onClick={() => scrollTo('hero')}
-            className="flex items-center space-x-2 cursor-pointer group"
+          {/* Brand logo */}
+          <button
+            id="nav-brand-logo"
+            type="button"
+            onClick={() => scrollToSection('hero')}
+            className="flex items-center space-x-2 cursor-pointer group bg-transparent border-0 text-left p-0"
           >
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 8, ease: 'linear' }}
               className="text-[#9ACD32]"
             >
-              <Disc className="w-6 h-6" />
+              <Asterisk className="w-6 h-6" />
             </motion.div>
             <span className="font-brat text-xl tracking-tight text-white group-hover:text-[#9ACD32] transition-colors leading-none">
               senzhao
-              <span className="text-[#9ACD32] text-xs align-super">360</span>
+              <span className="text-[#9ACD32] text-xs align-super ml-0.5">360</span>
             </span>
-          </div>
+          </button>
 
-          {/* Desktop Nav Items */}
+          {/* Desktop navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => {
-              const active = currentSection === item.id;
+            {NAV_ITEMS.map((item) => {
+              const isActive = currentSection === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => scrollTo(item.id)}
+                  id={`nav-link-${item.id}`}
+                  type="button"
+                  onClick={() => scrollToSection(item.id)}
                   className={`px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all duration-200 cursor-pointer ${
-                    active
+                    isActive
                       ? 'text-black bg-[#9ACD32] font-bold shadow-[0_0_12px_rgba(154,205,50,0.5)]'
                       : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
                   }`}
@@ -84,9 +89,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
             })}
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu toggle */}
           <div className="md:hidden flex items-center">
             <button
+              id="mobile-menu-toggle"
+              type="button"
               onClick={() => setIsOpen(!isOpen)}
               className="text-[#9ACD32] p-2 hover:bg-[#9ACD32]/10 transition-colors"
               aria-label="Toggle navigation menu"
@@ -97,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -106,14 +113,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-[#0d0e0d] border-b border-[#9ACD32]/30 px-4 pt-2 pb-6 space-y-2"
           >
-            {navItems.map((item) => {
-              const active = currentSection === item.id;
+            {NAV_ITEMS.map((item) => {
+              const isActive = currentSection === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => scrollTo(item.id)}
+                  id={`mobile-nav-link-${item.id}`}
+                  type="button"
+                  onClick={() => scrollToSection(item.id)}
                   className={`w-full text-left px-4 py-3 text-xs font-mono uppercase tracking-widest ${
-                    active
+                    isActive
                       ? 'bg-[#9ACD32] text-black font-bold'
                       : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
                   }`}
@@ -127,4 +136,4 @@ export const Navbar: React.FC<NavbarProps> = ({ currentSection }) => {
       </AnimatePresence>
     </nav>
   );
-};
+}

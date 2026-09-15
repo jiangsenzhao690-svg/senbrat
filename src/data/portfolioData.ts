@@ -1,6 +1,6 @@
-import { Project, Skill, Track, ColorPreset } from '../types';
+import { WorkItem, SkillItem, SongItem, ColorPreset } from '../types';
 
-export const PROJECTS: Project[] = [
+export const WORKS_DATA: WorkItem[] = [
   {
     id: 'proj-1',
     title: 'nuances-and-brat',
@@ -81,7 +81,7 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const SKILLS: Skill[] = [
+export const SKILLS_DATA: SkillItem[] = [
   { name: 'React / SolidJS / Next.js', level: 95, category: 'Code' },
   { name: 'WebGL / Three.js / Canvas', level: 85, category: 'Code' },
   { name: 'WebAudio DSP / Tone.js', level: 80, category: 'Code' },
@@ -92,20 +92,11 @@ export const SKILLS: Skill[] = [
   { name: 'Motion & Micro-Animation', level: 90, category: 'Code' },
 ];
 
-export const PLAYLIST: Track[] = [
+export const SONGS_DATA: SongItem[] = [
   { id: 'song-1', title: '360', artist: 'Charli XCX', duration: '2:26', energyLevel: '100% Club Pop' },
   { id: 'song-2', title: 'Von dutch', artist: 'Charli XCX', duration: '2:44', energyLevel: 'Acid Synth Overdrive' },
   { id: 'song-3', title: 'b2b', artist: 'Charli XCX', duration: '2:58', energyLevel: 'Strobe Lights Loop' },
   { id: 'song-4', title: '365', artist: 'Charli XCX', duration: '3:23', energyLevel: 'Endless Green Rave Simulator' },
-  { id: 'song-5', title: 'Sympathy is a knife', artist: 'Charli XCX', duration: '2:52', energyLevel: 'Low-res Contrast Vibe' },
-];
-
-export const MANIFESTO_QUOTES = [
-  "brat and it's the same but it's a website so it's fully interactive to type whatever you want.",
-  "i'm your favorite digital subculture designer, call me when you want something messy yet pristine.",
-  'everything is fuzzy, everything is green, but the code is perfectly structured and responsive.',
-  "we don't do boring corporate margins here. select black, select green, let text blur.",
-  'who cares about polished clean gradients when you can have brutal yellowgreen overload?',
 ];
 
 export const COLOR_PRESETS: ColorPreset[] = [
@@ -113,4 +104,19 @@ export const COLOR_PRESETS: ColorPreset[] = [
   { name: 'club-inverted', bg: '#0A0B08', text: '#9ACD32', blur: 0.6, scaleX: 0.75, label: '低頻暗' },
   { name: 'overdrive-orange', bg: '#ff4500', text: '#ffffff', blur: 0.3, scaleX: 0.9, label: '酸橘色' },
   { name: 'ambient-gray', bg: '#3a3d3a', text: '#9ACD32', blur: 0.8, scaleX: 0.8, label: '顆粒灰' },
+];
+
+export const RANDOM_WORDS: string[] = [
+  'brat',
+  'so-brat',
+  '360-designer',
+  'alternative',
+  'club-classics',
+  'low-res',
+  'anti-design',
+  'synthesizer',
+  'analog-clipping',
+  'hyperpop',
+  'acid-graphics',
+  'brutalism',
 ];

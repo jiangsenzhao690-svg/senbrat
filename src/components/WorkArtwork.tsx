@@ -1,10 +1,11 @@
 import React from 'react';
+import { WorkItem } from '../types';
 
-interface ProjectCardImageProps {
-  image: 'collage' | 'rave-android' | 'studio-android' | 'brat-chair' | 'synth' | 'audio-filter';
+interface WorkArtworkProps {
+  image: WorkItem['image'];
 }
 
-export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => {
+export function WorkArtwork({ image }: WorkArtworkProps) {
   switch (image) {
     case 'collage':
       return (
@@ -17,14 +18,18 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
             }}
           />
           <div className="flex justify-between items-start relative z-10">
-            <span className="font-brat text-xl text-black font-black tracking-tighter">brat</span>
+            <span className="font-brat text-xl text-black font-black tracking-tighter">
+              brat
+            </span>
             <div className="w-12 h-12 transform rotate-12 origin-top-right group-hover/collage:scale-110 duration-500 transition-all">
               <svg viewBox="0 0 60 60" className="w-full h-full drop-shadow-md">
-                <radialGradient id="sliceG" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#fff" />
-                  <stop offset="70%" stopColor="#f7eeae" />
-                  <stop offset="100%" stopColor="#8cb71b" />
-                </radialGradient>
+                <defs>
+                  <radialGradient id="sliceG" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#fff" />
+                    <stop offset="70%" stopColor="#f7eeae" />
+                    <stop offset="100%" stopColor="#8cb71b" />
+                  </radialGradient>
+                </defs>
                 <path
                   d="M 10 30 C 10 10, 50 10, 50 30 C 50 35, 10 35, 10 30"
                   fill="url(#sliceG)"
@@ -34,7 +39,6 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
               </svg>
             </div>
           </div>
-
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-10">
             <div className="relative w-28 h-28 flex items-center justify-center group-hover/collage:scale-105 duration-500 transition-all">
               <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-xl">
@@ -50,7 +54,6 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
               </div>
             </div>
           </div>
-
           <div className="flex justify-between items-end relative z-10 font-mono text-[9px] text-black/80 font-bold uppercase">
             <span>[ ACID_COLLAGE ]</span>
             <span>CHARLI_MATRIX</span>
@@ -69,11 +72,7 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
             }}
           />
           <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent z-10" />
-
-          {/* Strobe background */}
           <div className="absolute inset-0 bg-[#9ACD32]/10 mix-blend-screen opacity-0 group-hover/rave:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-          {/* Android Rave graphic */}
           <div className="relative z-20 flex flex-col items-center">
             <svg
               viewBox="0 0 100 100"
@@ -123,7 +122,9 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
               <rect x="56" y="64" width="6" height="12" rx="3" fill="#5b7d0a" />
             </svg>
           </div>
-          <div className="absolute bottom-1 right-2 font-mono text-[8px] text-zinc-600">OCTANE RENDER</div>
+          <div className="absolute bottom-1 right-2 font-mono text-[8px] text-zinc-600">
+            OCTANE RENDER
+          </div>
         </div>
       );
 
@@ -146,11 +147,7 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
               <line x1="30" y1="70" x2="30" y2="110" stroke="#878a84" strokeWidth="3.5" />
               <line x1="70" y1="70" x2="70" y2="110" stroke="#797c77" strokeWidth="3.5" />
               <path d="M 20 68 Q 50 63, 80 68 Q 82 72, 80 78 Q 50 82, 20 78 Q 18 72, 20 68 Z" fill="#9ACD32" />
-              <path
-                d="M 20 78 C 25 90, 75 90, 80 78 Q 81 74, 80 78 Q 50 82, 20 78"
-                fill="#8cb913"
-                opacity="0.9"
-              />
+              <path d="M 20 78 C 25 90, 75 90, 80 78 Q 81 74, 80 78 Q 50 82, 20 78" fill="#8cb913" opacity="0.9" />
               <text
                 x="50"
                 y="76"
@@ -216,15 +213,17 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
               </div>
             </div>
             <div className="h-16 flex items-end gap-1 px-1 border-b border-zinc-900 pb-2">
-              {[25, 45, 80, 95, 95, 20, 10, 35, 75, 95, 95, 50, 10, 30, 95, 95, 80, 45, 10].map((val, idx) => (
-                <div
-                  key={idx}
-                  className={`w-full transition-all duration-300 ${
-                    val >= 95 ? 'bg-red-600 animate-pulse' : 'bg-[#9ACD32]'
-                  }`}
-                  style={{ height: `${val}%` }}
-                />
-              ))}
+              {[25, 45, 80, 95, 95, 20, 10, 35, 75, 95, 95, 50, 10, 30, 95, 95, 80, 45, 10].map(
+                (val, idx) => (
+                  <div
+                    key={idx}
+                    className={`w-full transition-all duration-300 ${
+                      val >= 95 ? 'bg-red-600 animate-pulse' : 'bg-[#9ACD32]'
+                    }`}
+                    style={{ height: `${val}%` }}
+                  />
+                )
+              )}
             </div>
             <span className="font-mono text-[8px] text-[#9ACD32]/70 uppercase tracking-widest text-center">
               ANALOG DIODE CLIPPER FILTER
@@ -236,4 +235,4 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({ image }) => 
     default:
       return null;
   }
-};
+}

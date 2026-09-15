@@ -1,4 +1,7 @@
-export function playSynthNote(index: number = 0) {
+/**
+ * WebAudio synthesizer simulator for club / acid synth notes
+ */
+export function playSynthNote(index = 0) {
   try {
     const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!AudioCtx) return;
@@ -8,8 +11,8 @@ export function playSynthNote(index: number = 0) {
     const filter = ctx.createBiquadFilter();
     const gain = ctx.createGain();
 
-    const freqs = [110, 164.81, 220, 130.81, 146.83];
-    const freq = freqs[index % freqs.length] || 110;
+    const pentatonicFrequencies = [110, 164.81, 220, 130.81, 146.83];
+    const freq = pentatonicFrequencies[index % pentatonicFrequencies.length] || 110;
 
     osc.type = index % 2 === 0 ? 'sawtooth' : 'triangle';
     osc.frequency.setValueAtTime(freq, ctx.currentTime);

@@ -1,8 +1,8 @@
-export interface Project {
+export interface WorkItem {
   id: string;
   title: string;
   subtitle: string;
-  category: 'design' | 'art' | 'web' | 'audio';
+  category: 'web' | 'design' | 'art' | 'audio';
   tags: string[];
   description: string;
   color: string;
@@ -11,27 +11,18 @@ export interface Project {
   image: 'collage' | 'rave-android' | 'studio-android' | 'brat-chair' | 'synth' | 'audio-filter';
 }
 
-export interface Skill {
+export interface SkillItem {
   name: string;
   level: number;
   category: 'Code' | 'Vibe';
 }
 
-export interface Track {
+export interface SongItem {
   id: string;
   title: string;
   artist: string;
   duration: string;
   energyLevel: string;
-}
-
-export interface MessageLog {
-  id: string;
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  timestamp: string;
 }
 
 export interface ColorPreset {
@@ -41,4 +32,18 @@ export interface ColorPreset {
   blur: number;
   scaleX: number;
   label: string;
+}
+
+export interface NavSection {
+  id: string;
+  label: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  timestamp: string;
 }
